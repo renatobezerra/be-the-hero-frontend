@@ -1,12 +1,47 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 
-import './styles.css';
+import api from '../../services/api';
 
+import './styles.css';
 import logoImg from '../../assets/logo.svg';
 
 export default function NewIncident(){
+  const history = useHistory();
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [value, setValue] = useState('');
+
+  async function handleNewIncident(e){
+    e.preventDefault();
+    const ongId = localStorage.getItem('ongId');
+
+    console.log(`OngId: ${ongId}`);
+
+    try{
+      let newIncident = {
+        title,
+        description,
+        value
+      };
+
+      await api.post('/incidents', newIncident, {
+        headers: {
+          Authorization: ongId
+        }
+      });
+
+      alert('Novo caso cadastrado com sucesso !!!');
+
+      history.push('/profile');
+    }
+    catch(err){
+      console.log(err);
+      alert(`Ocoreu um erro ao cadastrar novo caso: ${err}`);
+    }
+  }
+
   return (
     <div className="new-incident-container">
       <div className="content">
@@ -21,10 +56,23 @@ export default function NewIncident(){
             Voltar para home
           </Link>
         </section>
-        <form>
-          <input placeholder="Titulo do Caso"/>
-          <textarea placeholder="Descrição" />
-          <input placeholder="Valor em Reais" />
+        <form onSubmit={handleNewIncident}>
+          <input
+            placeholder="Titulo do Caso"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            />
+          <textarea
+            placeholder="Descrição"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            />
+          <input
+            placeholder="Valor em Reais"
+            // value={Intl.NumberFormat('pt-br', {style: 'currency', currency: 'BRL'}).format(value)}
+            value={value}
+            onChange={e => setValue(e.target.value)}
+            />
           <button className="button" type="submit">Cadastrar</button>
         </form>
       </div>
