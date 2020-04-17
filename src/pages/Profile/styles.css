@@ -86,3 +86,31 @@
   line-height: 20px;
   font-size: 16px;
 }
+
+.grid-layout-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.grid-layout-buttons button{
+  display: inline-block;
+  text-align: center;
+  line-height: 32px;
+  height: 30px;
+  width: 30px;
+}
+
+.grid-layout-buttons button:first-of-type {
+  margin-left: auto;
+  margin-right: 2px;
+}
+
+.grid-layout-1 {
+  transition: all 0.4s;
+  grid-template-columns: repeat(1, 1fr) !important;
+}
+
+.grid-layout-2 {
+  transition: all 0.4s;
+  grid-template-columns: repeat(2, 1fr) !important;
+}

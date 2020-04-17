@@ -5,10 +5,12 @@ import api from '../../services/api';
 
 import './styles.css';
 import logoImg from '../../assets/logo.svg';
-import { FiPower, FiTrash2 } from 'react-icons/fi';
+import { FiPower, FiTrash2, FiList, FiGrid } from 'react-icons/fi';
 
 export default function Profile() {
   const [incidents, setIncidents] = useState([]); // Initializing 2WayDataBind for array incidents.
+  const [className, setClassName] = useState('');
+
   const history = useHistory();
 
   const ongId = localStorage.getItem('ongId');
@@ -47,6 +49,10 @@ export default function Profile() {
     history.push('/');
   }
 
+  function handleClassName(nameClass){
+    setClassName(nameClass);
+  }
+
   return (
     <div className="profile-container">
       <header>
@@ -58,9 +64,17 @@ export default function Profile() {
         </button>
       </header>
 
-      <h1>Casos Cadastrados</h1>
+      <div className="row grid-layout-buttons">
+        <h1>Casos Cadastrados</h1>
+        <button type="button" onClick={() => handleClassName("grid-layout-1")}>
+          <FiList size={18} color="#999" />
+        </button>
+        <button type="button" onClick={() => handleClassName("grid-layout-2")}>
+          <FiGrid size={18} color="#999" />
+        </button>
+      </div>
 
-      <ul>
+      <ul className={className}>
         {
           incidents.map(incident => (
             <li key={incident.id} >
